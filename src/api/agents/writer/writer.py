@@ -5,13 +5,11 @@ import prompty
 from prompty.tracer import trace
 
 
-
-@trace
 def write(researchContext, research, productContext, products, assignment, feedback="No Feedback"):
     # TODO: Update this once we have the logic to parse http error codes
     try:
         result = prompty.execute(
-            "writer.prompty",
+            "/workspaces/agent-openai-python-prompty/src/api/agents/writer/writer.prompty",
             parameters={"stream": True},
             inputs={
                 "researchContext": researchContext,

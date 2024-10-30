@@ -32,7 +32,6 @@ def _make_request(path, params=None):
     return items
 
 
-@trace
 def find_information(query, market="en-US"):
     """Find information using the Bing Search API"""
     params = {"q": query, "mkt": market, "count": 5}
@@ -45,7 +44,6 @@ def find_information(query, market="en-US"):
     return {"pages": pages, "related": related}
 
 
-@trace
 def find_entities(query, market="en-US"):
     """Find entities using the Bing Entity Search API"""
     params = "?mkt=" + market + "&q=" + urllib.parse.quote(query)
@@ -59,7 +57,6 @@ def find_entities(query, market="en-US"):
     return entities
 
 
-@trace
 def find_news(query, market="en-US"):
     """Find images using the Bing News Search API"""
     params = {"q": query, "mkt": market, "count": 5}
@@ -77,7 +74,6 @@ def find_news(query, market="en-US"):
     return articles
 
 
-@trace
 def execute(instructions: str, feedback: str = "No feedback"):
     """Assign a research task to a researcher"""
     functions = {
@@ -102,7 +98,6 @@ def execute(instructions: str, feedback: str = "No feedback"):
     return research
 
 
-@trace
 def process(research):
     """Process the research results"""
     # process web searches
@@ -135,7 +130,6 @@ def process(research):
     }
 
 
-@trace
 def research(instructions: str, feedback: str = "No feedback"):
     r = execute(instructions=instructions)
     p = process(r)

@@ -25,8 +25,6 @@ AZURE_OPENAI_DEPLOYMENT = "text-embedding-ada-002"
 AZURE_AI_SEARCH_ENDPOINT = os.getenv("AI_SEARCH_ENDPOINT")
 AZURE_AI_SEARCH_INDEX = "contoso-products"
 
-
-@trace
 def generate_embeddings(queries: List[str]) -> str:
     token_provider = get_bearer_token_provider(
         DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
@@ -44,8 +42,6 @@ def generate_embeddings(queries: List[str]) -> str:
 
     return items
 
-
-@trace
 def retrieve_products(items: List[Dict[str, any]], index_name: str) -> str:
     search_client = SearchClient(
         endpoint=os.environ["AZURE_SEARCH_ENDPOINT"],
@@ -84,10 +80,9 @@ def retrieve_products(items: List[Dict[str, any]], index_name: str) -> str:
     return products
 
 
-@trace
 def find_products(context: str) -> Dict[str, any]:
     # Get product queries
-    queries = prompty.execute("product.prompty", inputs={"context":context})
+    queries = prompty.execute("/workspaces/agent-openai-python-prompty/src/api/agents/product/product.prompty", inputs={"context":context})
     qs = json.loads(queries)
     # Generate embeddings
     items = generate_embeddings(qs)

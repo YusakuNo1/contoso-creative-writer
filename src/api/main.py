@@ -49,7 +49,6 @@ async def root():
 
 
 @app.post("/api/article")
-@trace
 async def create_article(task: Task):
     return StreamingResponse(
         PromptyStream(
@@ -60,4 +59,4 @@ async def create_article(task: Task):
 
 
 # TODO: fix open telemetry so it doesn't slow app so much
-FastAPIInstrumentor.instrument_app(app)
+# FastAPIInstrumentor.instrument_app(app)
