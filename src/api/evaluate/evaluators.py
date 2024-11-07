@@ -49,7 +49,7 @@ def evaluate_article(data, trace_context):
         configuration = {
             "azure_deployment": os.environ["AZURE_OPENAI_4_EVAL_DEPLOYMENT_NAME"],   
             "api_version": os.environ["AZURE_OPENAI_API_VERSION"],
-            "azure_endpoint": f"https://{os.getenv('AZURE_OPENAI_NAME')}.cognitiveservices.azure.com/"
+            "azure_endpoint": os.environ["AZURE_OPENAI_ENDPOINT"]
         }
         project_scope = {
             "subscription_id": os.environ["AZURE_SUBSCRIPTION_ID"],   

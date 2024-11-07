@@ -39,6 +39,10 @@ def image_gen(image_prompt):
 
     # Retrieve the generated image
     image_url = json_response["data"][0]["url"]  # extract image URL from response
+
+    import logging
+    logging.warning(f"********** Image {image_dir} {image_url} {image_path}")
+
     generated_image = requests.get(image_url).content  # download the image
     with open(image_path, "wb") as image_file:
         image_file.write(generated_image)

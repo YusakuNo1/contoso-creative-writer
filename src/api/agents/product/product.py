@@ -33,7 +33,7 @@ def generate_embeddings(queries: List[str]) -> str:
     )
 
     client = AzureOpenAI(
-        azure_endpoint = f"https://{os.getenv('AZURE_OPENAI_NAME')}.cognitiveservices.azure.com/", 
+        azure_endpoint = os.environ["AZURE_OPENAI_ENDPOINT"], 
         api_version=os.environ["AZURE_OPENAI_API_VERSION"],
         azure_ad_token_provider=token_provider
     )
@@ -88,6 +88,13 @@ def retrieve_products(items, index_name):
 def find_products(context: str) -> Dict[str, any]:
     # Get product queries
     queries = prompty.execute("product.prompty", inputs={"context":context})
+
+    import logging
+    logging.warning(f"*************** queries: {queries}")
+
+    if queries.startswith("queries:") or queries.startswith("Queries:"):
+        queries = queries[8:]
+
     qs = json.loads(queries)
     # Generate embeddings
     items = generate_embeddings(qs)
