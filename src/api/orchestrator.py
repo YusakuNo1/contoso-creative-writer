@@ -60,7 +60,6 @@ def send_products(product_result):
 def send_writer(full_result):
     return json.dumps(("writer", full_result))
 
-@trace
 def create(research_context, product_context, assignment_context, evaluate=True):
     
     feedback = "No Feedback"

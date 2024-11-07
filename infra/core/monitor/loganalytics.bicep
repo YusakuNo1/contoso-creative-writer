@@ -5,7 +5,7 @@ param tags object = {}
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview' = {
   name: name
-  location: location
+  location: 'eastus'
   tags: tags
   properties: any({
     retentionInDays: 30
