@@ -9,7 +9,7 @@ def write(researchContext, research, productContext, products, assignment, feedb
     # TODO: Update this once we have the logic to parse http error codes
     try:
         result = prompty.execute(
-            "/workspaces/agent-openai-python-prompty/src/api/agents/writer/writer.prompty",
+            "writer.prompty",
             parameters={"stream": True},
             inputs={
                 "researchContext": researchContext,
