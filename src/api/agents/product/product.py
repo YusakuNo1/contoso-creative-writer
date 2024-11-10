@@ -26,14 +26,15 @@ AZURE_AI_SEARCH_ENDPOINT = os.getenv("AI_SEARCH_ENDPOINT")
 AZURE_AI_SEARCH_INDEX = "contoso-products"
 
 def generate_embeddings(queries: List[str]) -> str:
-    token_provider = get_bearer_token_provider(
-        DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
-    )
+    # token_provider = get_bearer_token_provider(
+    #     DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
+    # )
 
     client = AzureOpenAI(
         azure_endpoint = os.environ["AZURE_OPENAI_ENDPOINT"], 
         api_version=os.environ["AZURE_OPENAI_API_VERSION"],
-        azure_ad_token_provider=token_provider
+        # azure_ad_token_provider=token_provider
+        api_key=os.environ["AZURE_OPENAI_KEY"],
     )
 
     embeddings = client.embeddings.create(input=queries, model="text-embedding-ada-002")

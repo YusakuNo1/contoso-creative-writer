@@ -9,14 +9,15 @@ def image_gen(image_prompt):
     import os
     import requests
 
-    token_provider = get_bearer_token_provider(
-        DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
-    )
+    # token_provider = get_bearer_token_provider(
+    #     DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
+    # )
 
     client = AzureOpenAI(
         azure_endpoint = f"{os.getenv('AZURE_OPENAI_ENDPOINT')}", 
         api_version="2024-02-01",
-        azure_ad_token_provider=token_provider
+        # azure_ad_token_provider=token_provider
+        api_key=os.getenv("AZURE_OPENAI_KEY"),
     )
 
     result = client.images.generate(

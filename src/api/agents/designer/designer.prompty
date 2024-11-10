@@ -10,6 +10,7 @@ model:
     type: azure_openai
     azure_deployment: gpt-4o-mini
     api_version: 2023-07-01-preview
+    api_key: ${env:AZURE_OPENAI_KEY}
 sample:
   article: this is an article about tents
   instructions: Generate a detailed prompt that helps a writer create a unique image for their story. 

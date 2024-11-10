@@ -9,6 +9,7 @@ model:
     type: azure_openai
     azure_deployment: gpt-4
     api_version: 2023-07-01-preview
+    api_key: ${env:AZURE_OPENAI_KEY}
   parameters:
     max_tokens: 2000
 sample:
