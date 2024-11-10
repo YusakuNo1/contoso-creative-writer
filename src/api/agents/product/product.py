@@ -43,10 +43,16 @@ def generate_embeddings(queries: List[str]) -> str:
     return items
 
 def retrieve_products(items: List[Dict[str, any]], index_name: str) -> str:
+
+    from azure.core.credentials import AzureKeyCredential
+    aisearch_endpoint = os.environ["AZURE_SEARCH_ENDPOINT"]
+    aisearch_key = os.environ["AZURE_SEARCH_KEY"]
+    aisearch_credential = AzureKeyCredential(key=aisearch_key)
+
     search_client = SearchClient(
-        endpoint=os.environ["AZURE_SEARCH_ENDPOINT"],
+        endpoint=aisearch_endpoint,
         index_name=index_name,
-        credential=DefaultAzureCredential(),
+        credential=aisearch_credential, # DefaultAzureCredential(),
     )
 
     products = []

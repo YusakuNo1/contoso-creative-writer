@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
-
+# %% [markdown]
 # # Generating your product search index
 # Thereis notebook is designed to automatically create the product search index for you. It uses the [product catalog](products.csv) file to create the index. In order to do so it needs names ane keys for the following services:
 # 
@@ -9,9 +7,7 @@
 # 
 # You can find the names and keys in the Azure Portal. These need to be entered in a `.env` file in the root of this repository. The `.env` file is not checked in to source control. You can use the [`.env.sample`](../../.env.sample) file as a template.
 
-# In[1]:
-
-
+# %%
 import os
 import pandas as pd
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
@@ -44,18 +40,22 @@ from pathlib import Path
 
 load_dotenv()
 
+# %%
+from azure.core.credentials import AzureKeyCredential
 
-# In[2]:
+aisearch_endpoint = os.environ["AZURE_SEARCH_ENDPOINT"]
+aisearch_key = os.environ["AZURE_SEARCH_KEY"]
+index_name = "contoso-products"
+
+aisearch_credential = AzureKeyCredential(key=aisearch_key)
 
 
+# %%
 def delete_index(search_index_client: SearchIndexClient, search_index: str):
     print(f"deleting index {search_index}")
     search_index_client.delete_index(search_index)
 
-
-# In[3]:
-
-
+# %%
 def create_index_definition(name: str) -> SearchIndex:
     """
     Returns an Azure AI Search index with the given name.
@@ -136,23 +136,21 @@ def create_index_definition(name: str) -> SearchIndex:
 
     return index
 
-
-# In[4]:
-
-
+# %%
 def gen_products(
     path: str,
 ) -> List[Dict[str, any]]:
-    openai_service_endoint = os.environ["AZURE_OPENAI_ENDPOINT"]
+    azure_endpoint = os.environ["AZURE_OPENAI_ENDPOINT"]
     openai_deployment = "text-embedding-ada-002"
     # openai.Embedding.create() -> client.embeddings.create()
     azure_credential = DefaultAzureCredential()
     token_provider = get_bearer_token_provider(azure_credential,"https://cognitiveservices.azure.com/.default")
     client = AzureOpenAI(
         api_version="2023-07-01-preview",
-        azure_endpoint=openai_service_endoint,
+        azure_endpoint=azure_endpoint,
+        api_key=os.environ["AZURE_OPENAI_KEY"],
         azure_deployment=openai_deployment,
-        azure_ad_token_provider=token_provider
+        # azure_ad_token_provider=token_provider
     )
 
     products = pd.read_csv(path)
@@ -175,15 +173,10 @@ def gen_products(
 
     return items
 
-
-# In[5]:
-
-
-aisearch_endpoint = os.environ["AZURE_SEARCH_ENDPOINT"]
-index_name = "contoso-products"
-
+# %%
 search_index_client = SearchIndexClient(
-    aisearch_endpoint, DefaultAzureCredential()
+    aisearch_endpoint,
+    aisearch_credential,
 )
 
 delete_index(search_index_client, index_name)
@@ -192,18 +185,16 @@ print(f"creating index {index_name}")
 search_index_client.create_or_update_index(index)
 print(f"index {index_name} created")
 
-
-# In[6]:
-
-
+# %%
 print(f"indexing documents")
 docs = gen_products("products.csv")
 # Upload our data to the index.
 search_client = SearchClient(
     endpoint=aisearch_endpoint,
     index_name=index_name,
-    credential=DefaultAzureCredential(),
+    credential=aisearch_credential,
 )
 print(f"uploading {len(docs)} documents to index {index_name}")
 ds = search_client.upload_documents(docs)
+
 
