@@ -1,7 +1,7 @@
 import os
 import json
 from typing import Dict, List
-from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+# from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from prompty.tracer import trace
 import prompty
 import prompty.azure

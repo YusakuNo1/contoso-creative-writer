@@ -3,7 +3,7 @@ import prompty.azure
 import json
 from pathlib import Path
 from openai import AzureOpenAI
-from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+# from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
 def image_gen(image_prompt):
     import os
