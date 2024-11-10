@@ -18,11 +18,11 @@ jobs:
   evaluate:
     runs-on: ubuntu-latest
     env:
-      AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
-      AZURE_AI_PROJECT_NAME: ${{ vars.AZURE_AI_PROJECT_NAME }}
-      AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      AZURE_AI_PROJECT_NAME: ${{ vars.AZURE_AI_PROJECT_NAME }}
+      # AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
       AZURE_OPENAI_ENDPOINT: ${{ vars.AZURE_OPENAI_ENDPOINT }}
       AZURE_OPENAI_KEY: ${{ secrets.AZURE_OPENAI_KEY }}
       AZURE_OPENAI_API_VERSION: ${{ vars.AZURE_OPENAI_API_VERSION }}
@@ -53,13 +53,23 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r src/api/requirements.txt
 
-      # - name: Azure login
-      #   uses: azure/login@v2
-      #   with:
-      #     client-id: ${{ env.AZURE_CLIENT_ID }}
-      #     tenant-id: ${{ env.AZURE_TENANT_ID }}
-      #     subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
-  
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          # subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+          allow-no-subscriptions: true
+          enable-AzPSSession: true
+
+      - name: Azure CLI script
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show
+
+
       # - name: Set az account
       #   uses: azure/CLI@v2
       #   with:
