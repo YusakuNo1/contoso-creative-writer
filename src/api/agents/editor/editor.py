@@ -14,7 +14,8 @@ def edit(article, feedback):
     configuration = AzureOpenAIModelConfiguration(
         azure_deployment=os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME"),
         api_version=os.getenv("AZURE_OPENAI_API_VERSION"),
-        azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"]
+        azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
+        api_key=os.environ["AZURE_OPENAI_KEY"],
     )
     override_model = {
         "configuration": configuration,
