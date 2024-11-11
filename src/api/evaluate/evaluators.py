@@ -19,10 +19,10 @@ class ArticleEvaluator:
             FluencyEvaluator(model_config),
             CoherenceEvaluator(model_config),
             GroundednessEvaluator(model_config),
-            # ViolenceEvaluator(azure_ai_project=project_scope, credential=DefaultAzureCredential()),
-            # HateUnfairnessEvaluator(azure_ai_project=project_scope, credential=DefaultAzureCredential()),
-            # SelfHarmEvaluator(azure_ai_project=project_scope, credential=DefaultAzureCredential()),
-            # SexualEvaluator(azure_ai_project=project_scope, credential=DefaultAzureCredential())
+            ViolenceEvaluator(azure_ai_project=project_scope, credential=DefaultAzureCredential()),
+            HateUnfairnessEvaluator(azure_ai_project=project_scope, credential=DefaultAzureCredential()),
+            SelfHarmEvaluator(azure_ai_project=project_scope, credential=DefaultAzureCredential()),
+            SexualEvaluator(azure_ai_project=project_scope, credential=DefaultAzureCredential())
         ]
 
     def __call__(self, *, query: str, context: str, response: str, **kwargs):
